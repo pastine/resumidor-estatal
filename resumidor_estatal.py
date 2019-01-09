@@ -1,5 +1,6 @@
 import praw
 import time
+from summa import summarizer
 
 
 reddit = praw.Reddit('resumidor_estatal')
@@ -11,7 +12,7 @@ def watch_and_reply(comments_replied, file):
             print('Already replied to this comment :(')
             continue
         print('Found a comment! Time to reply.')
-        comment.reply('I\'m alive!')
+        comment.reply(summarizer.summarize(comment.body, language='spanish'))
         comments_replied.add(comment.id)
         file.write(comment.id+'\n')
         file.flush()
