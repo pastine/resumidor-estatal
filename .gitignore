@@ -2,3 +2,4 @@
 .idea/
 praw.ini
 *.txt
+config.py
