@@ -14,7 +14,7 @@ def build_child_comment(parent_comment):
 def summarize_news(parent_comment_body):
     summary = '>' # Summary must be quoted
     summary += summarizer.summarize(parent_comment_body, language='spanish')
-    summary = summary.replace('\n','\n\n>') # Reddit uses markdown, where paragraphs are divided by two breaklines
+    summary = summary.replace('\n','\n>\n>') # Reddit uses markdown, where paragraphs are divided by two breaklines
     return summary
 
 def watch_and_reply(comments_replied, file):
