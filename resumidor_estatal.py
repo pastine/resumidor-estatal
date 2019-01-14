@@ -19,7 +19,7 @@ def summarize_news(parent_comment_body):
     return summary
 
 def is_replied(comment):
-    replies = comment.replies.list()
+    replies = reddit.submission(url='http://www.reddit.com'+comment.permalink).comments
     for sub_comment in replies:
         if sub_comment.author.name == config.ME:
             return True
