@@ -41,8 +41,6 @@ def main():
         except Exception:
             print('Seems like we can\'t reply at the moment! Trying again in a minute')
             time.sleep(config.TIMEOUT)
-    file.close()  #Heh
-
 
 if __name__ == '__main__':
     main()
