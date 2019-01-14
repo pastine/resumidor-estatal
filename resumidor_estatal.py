@@ -24,12 +24,16 @@ def is_replied(comment):
             return True
         return False
 
+def valid(comment):
+    return comment.subreddit.display_name in config.SUBREDDITS and len(comment.body.split()) > config.WORDS_THRESHOLD
+
 def watch_and_reply():
-    for comment in reddit.redditor(config.REPLY_TO).comments.new(limit=10):
+    possible_comments = reddit.redditor(config.REPLY_TO).comments.new(limit=20)
+    valid_comments = [c for c in possible_comments if valid(c)]
+    for comment in valid_comments:
         if is_replied(comment):
             continue
         comment.reply(build_child_comment(comment))
-
 
 def main():
     while True:
