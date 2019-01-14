@@ -1,5 +1,4 @@
 import praw
-from praw import *
 import time
 from summa import summarizer
 import config
@@ -38,7 +37,7 @@ def main():
             watch_and_reply()
             print(f'Sleeping for {config.TIMEOUT} seconds...')
             time.sleep(config.TIMEOUT)
-        except Exception:
+        except praw.exceptions.APIException:
             print('Seems like we can\'t reply at the moment! Trying again in a minute')
             time.sleep(config.TIMEOUT)
 
