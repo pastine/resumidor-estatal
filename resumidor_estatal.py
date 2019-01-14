@@ -19,13 +19,13 @@ def summarize_news(parent_comment_body):
     return summary
 
 def is_replied(comment):
-    replies = reddit.submission(url='http://www.reddit.com'+comment.permalink).comments
+    replies = comment.replies.list()
     for sub_comment in replies:
         if sub_comment.author.name == config.ME:
             return True
         return False
 
-def watch_and_reply(comments_replied, file):
+def watch_and_reply():
     for comment in reddit.redditor(config.REPLY_TO).comments.new(limit=10):
         if is_replied(comment):
             continue
@@ -33,14 +33,9 @@ def watch_and_reply(comments_replied, file):
 
 
 def main():
-    try:
-        file = open('comments_ids.txt', 'r+')
-    except:
-        file = open('comments_ids.txt', 'a+')
-    comments_replied = set(map(str.strip, file))
     while True:
         try:
-            watch_and_reply(comments_replied, file)
+            watch_and_reply()
             print(f'Sleeping for {config.TIMEOUT} seconds...')
             time.sleep(config.TIMEOUT)
         except Exception:
