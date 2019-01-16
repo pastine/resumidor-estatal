@@ -3,6 +3,7 @@ import time
 from summa import summarizer
 import config
 import os
+import logging
 
 reddit = praw.Reddit(client_id=os.environ['CLIENT_ID'],
                      client_secret=os.environ['CLIENT_SECRET'],
@@ -40,15 +41,17 @@ def watch_and_reply():
         if is_replied(comment):
             continue
         comment.reply(build_child_comment(comment))
+        logging.info("Replied to: http://www.reddit.com" + comment.permalink)
 
 def main():
+    logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
     while True:
         try:
             watch_and_reply()
         except praw.exceptions.APIException:
-            print('Seems like we can\'t reply at the moment!')
+            logging.error('Seems like we can\'t reply at the moment!')
         finally:
-            print(f'Sleeping for {config.TIMEOUT} seconds...')
+            logging.info(f'Sleeping for {config.TIMEOUT} seconds...')
             time.sleep(config.TIMEOUT)
 
 if __name__ == '__main__':
