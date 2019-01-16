@@ -24,17 +24,17 @@ def summarize_news(parent_comment_body):
 
 def is_replied(comment):
     stickied = reddit.submission(url='http://www.reddit.com'+comment.permalink).comments[0]
-    if not stickied.author == config.REPLY_TO: return True
+    if not stickied.author == os.environ['REPLY_TO']: return True
     for sub_comment in stickied:
-        if sub_comment.author.name == config.ME:
+        if sub_comment.author.name == os.environ['ME']:
             return True
         return False
 
 def valid(comment):
-    return comment.subreddit.display_name in config.SUBREDDITS and len(comment.body.split()) > config.WORDS_THRESHOLD
+    return comment.subreddit.display_name in os.environ['SUBREDDITS'].split() and len(comment.body.split()) > config.WORDS_THRESHOLD
 
 def watch_and_reply():
-    possible_comments = reddit.redditor(config.REPLY_TO).comments.new(limit=20)
+    possible_comments = reddit.redditor(os.environ['REPLY_TO']).comments.new(limit=20)
     valid_comments = [c for c in possible_comments if valid(c)]
     for comment in valid_comments:
         if is_replied(comment):
