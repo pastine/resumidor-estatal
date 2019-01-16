@@ -24,6 +24,7 @@ def summarize_news(parent_comment_body):
 
 def is_replied(comment):
     stickied = reddit.submission(url='http://www.reddit.com'+comment.permalink).comments[0]
+    if not stickied.replies.list(): return False
     if not stickied.author == config.REPLY_TO: return True
     for sub_comment in stickied:
         if sub_comment.author.name == config.ME:
