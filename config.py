@@ -1,6 +1,6 @@
 ME = "ResumidorEstatalBot"
 REPLY_TO = "ResumidorEstatalDum"
-SUBREDDITS = ["test"]
+SUBREDDITS = ["ResumidorPlayground"]
 WORDS_THRESHOLD = 100
 TIMEOUT = 60
 
