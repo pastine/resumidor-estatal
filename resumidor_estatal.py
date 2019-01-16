@@ -4,6 +4,7 @@ from summa import summarizer
 import config
 import os
 import logging
+import logging.config
 
 reddit = praw.Reddit(client_id=os.environ['CLIENT_ID'],
                      client_secret=os.environ['CLIENT_SECRET'],
@@ -24,11 +25,13 @@ def summarize_news(parent_comment_body):
     return summary
 
 def is_replied(comment):
+    logging.debug("Trying to reply to: http://www.reddit.com" + comment.permalink)
     stickied = reddit.submission(url='http://www.reddit.com'+comment.permalink).comments[0]
     if not stickied.author == os.environ['REPLY_TO']: return True
     if not stickied.replies.list(): return False
-    for sub_comment in stickied:
+    for sub_comment in stickied.replies.list():
         if sub_comment.author.name == os.environ['ME']:
+            logging.debug("Skipping comment because it was already replied")
             return True
         return False
 
@@ -45,7 +48,9 @@ def watch_and_reply():
         logging.info("Replied to: http://www.reddit.com" + comment.permalink)
 
 def main():
-    logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+    loglevel = logging.DEBUG if os.environ['LOGLEVEL']=='DEBUG' else logging.INFO
+    logging.config.dictConfig({'version':1,'disable_existing_loggers':True})
+    logging.basicConfig(level=loglevel, format='%(asctime)s - %(levelname)s - %(message)s')
     while True:
         try:
             watch_and_reply()
