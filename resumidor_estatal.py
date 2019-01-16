@@ -23,8 +23,9 @@ def summarize_news(parent_comment_body):
     return summary
 
 def is_replied(comment):
-    replies = reddit.submission(url='http://www.reddit.com'+comment.permalink).comments
-    for sub_comment in replies:
+    stickied = reddit.submission(url='http://www.reddit.com'+comment.permalink).comments[0]
+    if not stickied.author == config.REPLY_TO: return True
+    for sub_comment in stickied:
         if sub_comment.author.name == config.ME:
             return True
         return False
@@ -44,10 +45,10 @@ def main():
     while True:
         try:
             watch_and_reply()
-            print(f'Sleeping for {config.TIMEOUT} seconds...')
-            time.sleep(config.TIMEOUT)
         except praw.exceptions.APIException:
-            print('Seems like we can\'t reply at the moment! Trying again in a minute')
+            print('Seems like we can\'t reply at the moment!')
+        finally:
+            print(f'Sleeping for {config.TIMEOUT} seconds...')
             time.sleep(config.TIMEOUT)
 
 if __name__ == '__main__':
