@@ -7,7 +7,6 @@ El flow es bastante sencillo:
 * Monitorea los comentarios de un usuario en particular (u/empleadoEstatalBot en este caso)
 * Agarra los últimos n comentarios del usuario
 * Filtra de esos n comentarios para quedarse solo con los que sean dentro de los subreddits permitidos y que tenga mas de x palabras (no tiene sentido resumir una noticia de menos de 100 palabras, por ejemplo)
-* Por limitaciones de la API, no se puede acceder directamente a las respuestas del comentario. Así que se agarra el thread entero, y de ahí se agarra el primer comentario de todos, que es siempre el stickeado del empleado estatal.
 * Recorre todas las respuestas del comentario seleccionado. Si alguna es el mismo bot, entonces ya esta respondido. Si no, entonces queda por responder.
 * Con TextRank se responde el comentario original con un resumen de su texto
 * Se duerme el bot 1 minuto, y luego vuelve a empezar todo el loop.

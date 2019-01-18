@@ -26,10 +26,11 @@ def summarize_news(parent_comment_body):
 
 def is_replied(comment):
     logging.debug("Trying to reply to: http://www.reddit.com" + comment.permalink)
-    stickied = reddit.submission(url='http://www.reddit.com'+comment.permalink).comments[0]
-    if not stickied.author == os.environ['REPLY_TO']: return True
-    if not stickied.replies.list(): return False
-    for sub_comment in stickied.replies.list():
+    comment.refresh()
+    comment.replies.replace_more()
+    if not comment.author == os.environ['REPLY_TO']: return True
+    if not comment.replies.list(): return False
+    for sub_comment in comment.replies.list():
         if sub_comment.author.name == os.environ['ME']:
             logging.debug("Skipping comment because it was already replied")
             return True
