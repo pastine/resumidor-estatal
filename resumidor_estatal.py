@@ -34,7 +34,7 @@ def is_replied(comment):
         if sub_comment.author.name == os.environ['ME']:
             logging.debug("Skipping comment because it was already replied")
             return True
-        return False
+    return False
 
 def valid(comment):
     return comment.subreddit.display_name in os.environ['SUBREDDITS'].split() and len(comment.body.split()) > config.WORDS_THRESHOLD
