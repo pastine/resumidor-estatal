@@ -57,6 +57,8 @@ def main():
             watch_and_reply()
         except praw.exceptions.APIException:
             logging.error('Seems like we can\'t reply at the moment!')
+        except Exception as e:
+            logging.error(e)
         finally:
             logging.info(f'Sleeping for {config.TIMEOUT} seconds...')
             time.sleep(config.TIMEOUT)
