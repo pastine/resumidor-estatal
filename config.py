@@ -1,6 +1,7 @@
 import os
 
-WORDS_THRESHOLD = 100
+TEXT_MIN_WORDS = 100
+SUMMARY_MIN_WORDS = 35
 TIMEOUT = 60
 
 AUTHORS = os.environ.get('AUTHORS',"u/aaa u/bbb u/ddd")
