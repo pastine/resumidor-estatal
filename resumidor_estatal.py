@@ -37,7 +37,7 @@ def is_replied(comment):
     return False
 
 def valid(comment):
-    return comment.subreddit.display_name in os.environ['SUBREDDITS'].split() and len(comment.body.split()) > config.WORDS_THRESHOLD
+    return comment.subreddit.display_name in os.environ['SUBREDDITS'].split() and len(comment.body.split()) > config.TEXT_MIN_WORDS
 
 def watch_and_reply():
     possible_comments = reddit.redditor(os.environ['REPLY_TO']).comments.new(limit=20)
@@ -45,7 +45,11 @@ def watch_and_reply():
     for comment in valid_comments:
         if is_replied(comment):
             continue
-        comment.reply(build_child_comment(comment))
+        to_reply = build_child_comment(comment)
+        if len(to_reply.split()) < config.SUMMARY_MIN_WORDS:
+            logging.debug("Skipping comment because summary is too short")
+            continue
+        comment.reply(to_reply)
         logging.info("Replied to: http://www.reddit.com" + comment.permalink)
 
 def main():
