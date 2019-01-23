@@ -62,7 +62,7 @@ def main():
         except praw.exceptions.APIException:
             logging.error('Seems like we can\'t reply at the moment!')
         except Exception as e:
-            logging.error(e)
+            logging.error(f'{e.__class__.__name__}, {e}')
         finally:
             logging.info(f'Sleeping for {config.TIMEOUT} seconds...')
             time.sleep(config.TIMEOUT)
