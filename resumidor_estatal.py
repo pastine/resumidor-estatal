@@ -6,11 +6,13 @@ import os
 import logging
 import logging.config
 
-reddit = praw.Reddit(client_id=os.environ['CLIENT_ID'],
-                     client_secret=os.environ['CLIENT_SECRET'],
-                     user_agent=os.environ['USER_AGENT'],
-                     username=os.environ['BOT_USERNAME'],
-                     password=os.environ['BOT_PASSWORD'])
+reddit = praw.Reddit(
+    client_id=os.environ['CLIENT_ID'],
+    client_secret=os.environ['CLIENT_SECRET'],
+    user_agent=os.environ['USER_AGENT'],
+    username=os.environ['BOT_USERNAME'],
+    password=os.environ['BOT_PASSWORD']
+)
 
 def build_child_comment(parent_comment):
     reply = config.COMMENT_HEADER
