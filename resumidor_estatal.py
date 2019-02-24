@@ -6,11 +6,13 @@ import os
 import logging
 import logging.config
 
-reddit = praw.Reddit(client_id=os.environ['CLIENT_ID'],
-                     client_secret=os.environ['CLIENT_SECRET'],
-                     user_agent=os.environ['USER_AGENT'],
-                     username=os.environ['BOT_USERNAME'],
-                     password=os.environ['BOT_PASSWORD'])
+reddit = praw.Reddit(
+    client_id=os.environ['CLIENT_ID'],
+    client_secret=os.environ['CLIENT_SECRET'],
+    user_agent=os.environ['USER_AGENT'],
+    username=os.environ['BOT_USERNAME'],
+    password=os.environ['BOT_PASSWORD']
+)
 
 def build_child_comment(parent_comment):
     reply = config.COMMENT_HEADER
@@ -37,7 +39,10 @@ def is_replied(comment):
     return False
 
 def valid(comment):
-    return comment.subreddit.display_name in os.environ['SUBREDDITS'].split() and len(comment.body.split()) > config.TEXT_MIN_WORDS
+    valid_subs = os.environ['SUBREDDITS'].split()
+    word_count = len(comment.body.split())
+    current_sub = comment.subreddit.display_name
+    return current_sub in valid_subs and word_count > config.TEXT_MIN_WORDS
 
 def watch_and_reply():
     possible_comments = reddit.redditor(os.environ['REPLY_TO']).comments.new(limit=20)
